@@ -1,0 +1,197 @@
+
+
+
+
+kitten                                                        B. Bucksch
+Internet-Draft                                                    Beonex
+Intended status: Informational                                S. Farrell
+Expires: 5 June 2025                              Trinity College Dublin
+                                                         2 December 2024
+
+
+                              SASL Passkey
+                   draft-bucksch-sasl-passkey-latest
+
+Abstract
+
+   Introduces a SASL mechanism that allows the user to authenticate
+   using a FIDO2 Passkey.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://example.com/LATEST.  Status information for this document may
+   be found at https://datatracker.ietf.org/doc/draft-bucksch-sasl-
+   passkey/.
+
+   Discussion of this document takes place on the kitten Working Group
+   mailing list (mailto:kitten@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/kitten/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/kitten/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/benbucksch/sasl-passkey.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 5 June 2025.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Creation of the Passkey
+     2.1.  Initial Auth using Passkey
+   3.  IMAP Example
+   4.  Conventions and Definitions
+   5.  Security Considerations
+   6.  IANA Considerations
+   7.  Normative References
+   Acknowledgments
+   Authors' Addresses
+
+1.  Introduction
+
+   Introduces a SASL mechanism that allows the user to authenticate
+   using a FIDO2 Passkey.
+
+   The client/server exchange is a simple challenge-response mechanism,
+   using the same mechanism that browsers use when they authenticate
+   using Passkeys to a website.
+
+2.  Creation of the Passkey
+
+   The Passkey has to be created on the user's device via other means.
+   Signup and passkey creation happens, for example, at the normal web
+   frontend of the site.
+
+   We assume that the browser will use the same authenticator (OS
+   functions) as the authenticating application.  The authenticator is
+   responsible for creating and storing the Passkey.  The authenticator
+   may also sync the Passkey between the user's devices.  The Passkey is
+   never seen by either browser nor the authenticating application, but
+   managed entirely by the Passkey manager.
+
+2.1.  Initial Auth using Passkey
+
+   1.  The authenticating application has the target server hostname and
+       username configured.
+
+   If the target server is an IMAP server, the username is the email
+   address.  If the target server is an XMPP server, the username is the
+   XMPP address of the user.
+
+   1.  The authenticating application opens connection to target server
+       and starts login using the SASL PASSKEY mechanism, by sending:
+       PASSKEY <username>.
+
+   3.  a.  The server generates a Passkey challenge, based on the target
+   server hostname, username, and Passkey of the user, and sends the
+   challenge with base64 encoding to the client.
+
+   b.  If login for that user is forbidden, the server will return a
+   SASL error.  A human-readable error message for end users must be
+   included, with a detailed and helpful description of why login is
+   forbidden for that user, and instructions for the user how the
+   situation can be remedied.
+
+   1.  The authenticating application takes the challenge and passes it
+       on as-is to the OS authenticator API, which returns the response.
+       The OS calls are the same that the web browser would do.
+
+   As part of this process, the OS authenticator API may require the end
+   user to complete additional authentication, for example entering a
+   device unlock code, providing a fingerprint, face recognition, or
+   similar.  This is the responsibility of the OS authenticator and
+   outside the scope of this protocol.
+
+   The authenticating application then passes on the response as-is with
+   base64 encoding to the server.
+
+   5.  a.  If the server accepts the response as valid and allows login,
+   it responds with a SASL success response.  The user is logged in.
+
+   b.  If the response is invalid, the server responds with a SASL error
+   and a human-readable error message for the end user.
+
+   This SASL mechanims will typically be combined with SASL chain or
+   SASL2, to allow re-opening a new connection without requiring the
+   user to go through Passkey authentication again.
+
+3.  IMAP Example
+
+   In IMAP, the exchange would be: S: * OK ACME IMAP Server v1.23 is
+   ready C: 22 CAPABILITY S: 22 CAPABILITY IMAP4 IMAP4rev1 IMAP4rev2
+   AUTH=PASSKEY AUTH=REMEMBERME C: 23 AUTHENTICATE PASSKEY
+   you@example.com S: AEC6576576557=== (passkey challenge) C:
+   EAB675757GJvYgB== (passkey response) S: 23 OK AUTHENTICATE completed
+
+4.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+5.  Security Considerations
+
+   It's all about security.
+
+6.  IANA Considerations
+
+   This document has no IANA actions.
+
+7.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Authors' Addresses
+
+   Ben Bucksch
+   Beonex
+   Email: ben.bucksch@beonex.com
+
+
+   Stephen Farrell
+   Trinity College Dublin
+   Email: stephen.farrell@cs.tcd.ie
