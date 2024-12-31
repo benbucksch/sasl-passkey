@@ -70,18 +70,22 @@ application, but managed entirely by the Passkey manager.
 ## Initial Auth using Passkey
 
 1. The authenticating application has the target server hostname
-and username configured.
+and authentication identity (e.g. username or email address) configured.
 
 If the target server is an IMAP server, the username is the email address. If the target server is an XMPP server, the username is the
 XMPP address of the user.
 
-2. The authenticating application opens connection to target server and starts login using the SASL `PASSKEY` mechanism, by sending:
-`PASSKEY <username>`.
+2. The authenticating application opens (or reuses existing) connection to the target server and starts authentication using the SASL `PASSKEY` mechanism.
+`PASSKEY` mechanism starts with the client sending the initial client response,
+which has the following format defined using ABNF:
+
+passkey-client-step1 = authentication_id
+authentication_id    = 1*OCTET
 
 3.
   a. The server generates a Passkey challenge, based on the
-  target server hostname, username, and Passkey of the user,
-  and sends the challenge with base64 encoding to the client.
+  target server hostname, authentication identity, and Passkey of the user,
+  and sends the server challenge with to the client.
 
   b. If login for that user is forbidden, the server will return a
   SASL error. A human-readable error message for end users
@@ -100,7 +104,7 @@ face recognition, or similar. This is the responsibility of the
 OS authenticator and outside the scope of this protocol.
 
 The authenticating application then passes on the response
-as-is with base64 encoding to the server.
+as-is to the server.
 
 5.
   a. If the server accepts the response as valid and allows login,
@@ -120,11 +124,16 @@ In IMAP, the exchange would be:
 S: * OK ACME IMAP Server v1.23 is ready
 C: 22 CAPABILITY
 S: 22 CAPABILITY IMAP4rev1 IMAP4rev2 AUTH=PASSKEY AUTH=REMEMBERME
-C: 23 AUTHENTICATE PASSKEY you@example.com
+C: 23 AUTHENTICATE PASSKEY eW91QGV4YW1wbGUuY29tCg==
 S: AEC6576576557=== (passkey challenge)
 C: EAB675757GJvYgB== (passkey response)
 S: 23 OK AUTHENTICATE completed
 ```
+
+Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authentication identity ("you@example.com"),
+"AEC6576576557===" is base64-encoded passkey challenge,
+"EAB675757GJvYgB==" is base64-encoded passkey response.
+All challenge and responses values are base64-encoded according to the IMAP SASL protocol profile.
 
 # Conventions and Definitions
 
