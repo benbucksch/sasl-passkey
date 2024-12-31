@@ -70,7 +70,7 @@ application, but managed entirely by the Passkey manager.
 ## Initial Auth using Passkey
 
 1. The authenticating application has the target server hostname
-and authentication identity configured.
+and authentication identity (e.g. username or email address) configured.
 
 If the target server is an IMAP server, the username is the email address. If the target server is an XMPP server, the username is the
 XMPP address of the user.
