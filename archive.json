@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-31T00:06:54.762332+00:00",
+  "timestamp": "2025-01-02T00:07:00.004121+00:00",
   "repo": "benbucksch/sasl-passkey",
   "labels": [
     {
@@ -50,5 +50,77 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDONX4Mas6GfVLP",
+      "title": "Use SASL terminology and clarified separation between SASL protocol profiles and PASSKEY mechanism",
+      "url": "https://github.com/benbucksch/sasl-passkey/pull/1",
+      "state": "MERGED",
+      "author": "aamelnikov",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "aamelnikov"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-12-31T11:22:43Z",
+      "updatedAt": "2024-12-31T13:53:39Z",
+      "baseRepository": "benbucksch/sasl-passkey",
+      "baseRefName": "main",
+      "baseRefOid": "4a3dcaea0eb8a528b2f0ddac35d43bcedfcd5a39",
+      "headRepository": "aamelnikov/sasl-passkey",
+      "headRefName": "melnikov/sasl-terminology-cleanup",
+      "headRefOid": "6d7bf640e5db086a71fcdad4e510080da3095900",
+      "closedAt": "2024-12-31T12:30:05Z",
+      "mergedAt": "2024-12-31T12:30:05Z",
+      "mergedBy": "benbucksch",
+      "mergeCommit": {
+        "oid": "9aefe6b8cc9c88ac5a61d4a3b9b3f8bafea152fd"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONX4Mas6Wlhj0",
+          "commit": {
+            "abbreviatedOid": "293dcb9"
+          },
+          "author": "benbucksch",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-12-31T12:04:14Z",
+          "updatedAt": "2024-12-31T12:29:13Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\nand authentication identity (e.g. username or email address) configured.\r\n```\r\n",
+              "createdAt": "2024-12-31T12:04:14Z",
+              "updatedAt": "2024-12-31T12:29:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDONX4Mas6Wly5q",
+          "commit": {
+            "abbreviatedOid": "293dcb9"
+          },
+          "author": "aamelnikov",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-31T13:53:39Z",
+          "updatedAt": "2024-12-31T13:53:39Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Fair enough.",
+              "createdAt": "2024-12-31T13:53:39Z",
+              "updatedAt": "2024-12-31T13:53:39Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
