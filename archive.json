@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-16T00:07:00.514405+00:00",
+  "timestamp": "2025-01-19T00:07:22.246044+00:00",
   "repo": "benbucksch/sasl-passkey",
   "labels": [
     {
@@ -58,7 +58,7 @@
       "url": "https://github.com/benbucksch/sasl-passkey/pull/1",
       "state": "MERGED",
       "author": "aamelnikov",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [
         "aamelnikov"
       ],
@@ -106,7 +106,7 @@
             "abbreviatedOid": "293dcb9"
           },
           "author": "aamelnikov",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-12-31T13:53:39Z",
@@ -119,6 +119,48 @@
               "updatedAt": "2024-12-31T13:53:39Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDONX4Mas6H_kzi",
+      "title": "Added initial IANA registration for SASL PASSKEY",
+      "url": "https://github.com/benbucksch/sasl-passkey/pull/2",
+      "state": "MERGED",
+      "author": "aamelnikov",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-01-16T11:36:15Z",
+      "updatedAt": "2025-01-16T14:19:05Z",
+      "baseRepository": "benbucksch/sasl-passkey",
+      "baseRefName": "main",
+      "baseRefOid": "9aefe6b8cc9c88ac5a61d4a3b9b3f8bafea152fd",
+      "headRepository": "aamelnikov/sasl-passkey",
+      "headRefName": "iana_registration",
+      "headRefOid": "f05ac38a0aeb468b96629f7fa90e14c16baa5e25",
+      "closedAt": "2025-01-16T14:19:05Z",
+      "mergedAt": "2025-01-16T14:19:05Z",
+      "mergedBy": "benbucksch",
+      "mergeCommit": {
+        "oid": "63fa2412892c7e4dbc239921d935b2e411c83bd1"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONX4Mas6YXh2R",
+          "commit": {
+            "abbreviatedOid": "f05ac38"
+          },
+          "author": "benbucksch",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-01-16T14:18:51Z",
+          "updatedAt": "2025-01-16T14:18:51Z",
+          "comments": []
         }
       ]
     }
