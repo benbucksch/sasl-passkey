@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-23T00:06:55.838436+00:00",
+  "timestamp": "2025-01-26T00:07:16.488484+00:00",
   "repo": "benbucksch/sasl-passkey",
   "labels": [
     {
@@ -160,6 +160,48 @@
           "body": "",
           "createdAt": "2025-01-16T14:18:51Z",
           "updatedAt": "2025-01-16T14:18:51Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDONX4Mas6I5LIu",
+      "title": "Added ABNF for the error code and human readable error message",
+      "url": "https://github.com/benbucksch/sasl-passkey/pull/3",
+      "state": "MERGED",
+      "author": "aamelnikov",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-01-24T12:30:25Z",
+      "updatedAt": "2025-01-24T14:16:51Z",
+      "baseRepository": "benbucksch/sasl-passkey",
+      "baseRefName": "main",
+      "baseRefOid": "63fa2412892c7e4dbc239921d935b2e411c83bd1",
+      "headRepository": "aamelnikov/sasl-passkey",
+      "headRefName": "error_message",
+      "headRefOid": "e2110f779a33459f8ac670b56ddd3d71b43add54",
+      "closedAt": "2025-01-24T14:16:51Z",
+      "mergedAt": "2025-01-24T14:16:51Z",
+      "mergedBy": "benbucksch",
+      "mergeCommit": {
+        "oid": "1f44a8d73cdcb7f18811eca269dee92b1bd612cf"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONX4Mas6ZWUvT",
+          "commit": {
+            "abbreviatedOid": "e2110f7"
+          },
+          "author": "benbucksch",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-01-24T14:16:37Z",
+          "updatedAt": "2025-01-24T14:16:37Z",
           "comments": []
         }
       ]
