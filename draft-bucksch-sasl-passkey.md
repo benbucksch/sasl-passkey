@@ -70,7 +70,8 @@ application, but managed entirely by the Passkey manager.
 ## Initial Auth using Passkey
 
 1. The authenticating application has the target server hostname
-and authentication identity (e.g. username or email address) configured.
+and authorization identity (e.g. username or email address) configured.
+SASL `PASSKEY` mechanism supports authenticating as one identity and then (optionally) authorizing as another.
 
 If the target server is an IMAP server, the username is the email address. If the target server is an XMPP server, the username is the
 XMPP address of the user.
@@ -79,13 +80,18 @@ XMPP address of the user.
 `PASSKEY` mechanism starts with the client sending the initial client response,
 which has the following format defined using ABNF:
 
-passkey-client-step1 = authentication_id
+```
+passkey-client-step1 = [authorization_id] UTF8NUL authentication_id
 authentication_id    = 1*OCTET
+authorization_id     = 1*OCTET
+UTF8NUL              = %x00 ; UTF-8 encoded NUL character
+```
 
 3.
   a. The server generates a Passkey challenge, based on the
-  target server hostname, authentication identity, and Passkey of the user,
-  and sends the server challenge with to the client.
+  target server hostname, authentication identity supplied by the client,
+  and Passkey of the user that corresponds to the authentication identity,
+  and sends the server challenge to the client.
 
   b. If login for that user is forbidden, the server will return a
   SASL error. A human-readable error message for end users
@@ -107,12 +113,20 @@ The authenticating application then passes on the response
 as-is to the server.
 
 5.
-  a. If the server accepts the response as valid and allows login,
-  it responds with a SASL success response. The user is logged in.
-
-  b. If the response is invalid, the server responds with a
+  a. If the response is invalid, the server responds with a
   SASL error and a human-readable error message for the end user.
 
+  b. If the server accepts the response as valid, it then checks
+  whether or not the provided authorization identity is allowed
+  to act as the authentication identity associated with the passkey
+  being used by the user. If such authorization is granted
+  (in particular if authorization and authentication identities
+  refer to the same identity, or authorization identity is omitted)
+  it responds with a SASL success response. The user is logged in.
+  Otherwise the server responds with a
+  SASL error and a human-readable error message for the end user.
+
+```
 server-final-message = server-error "," server-error-message
         ; Only returned on error. Omitted on success.
 
@@ -137,6 +151,7 @@ server-error-message = "m=" server-error-message-value
 
 server-error-message-value = 1*OCTET
         ; Human readable error message in UTF-8
+```
 
 This SASL mechanims will typically be combined with SASL chain
 or SASL2, to allow re-opening a new connection without requiring
