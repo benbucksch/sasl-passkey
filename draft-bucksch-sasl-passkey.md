@@ -70,7 +70,11 @@ application, but managed entirely by the Passkey manager.
 ## Initial Auth using Passkey
 
 1. The authenticating application has the target server hostname and
-   authentication identity (e.g. username or email address) configured.  If the
+   authorization identity (e.g. username or email address) configured.
+SASL `PASSKEY` mechanism supports authenticating as one identity ("authentication identity")
+and then (optionally) authorizing as another.
+
+If the
 target server is an IMAP server, the username is the email address. If the
 target server is an XMPP server, the username is the XMPP address of the user.
 
@@ -80,23 +84,17 @@ target server is an XMPP server, the username is the XMPP address of the user.
 which has the following format defined using ABNF:
 
 ~~~~ abnf
-passkey-client-step1 = authentication_id
-authentication_id    = 1*OCTET
+passkey-client-step1 = [authorization_id]
+authorization_id     = 1*OCTET
 ~~~~
 
-3.
-  a. The server generates a Passkey challenge, based on the
-  target server hostname, authentication identity, and Passkey of the user,
-  and sends the server challenge with to the client.
-
-  b. If login for that user is forbidden, the server will return a
-  SASL error. A human-readable error message for end users
-  must be included, with a detailed and helpful description of why
-  login is forbidden for that user, and instructions for the user
-  how the situation can be remedied.
+3. The server generates a Passkey challenge, based on the
+  target server hostname,
+  and sends the server challenge to the client. The challenge
+  doesn't depend on the passkey to be used by the user.
 
 4.
-The authenticating application takes the challenge and passes it
+The authenticating application (SASL client) takes the received passkey challenge and passes it
 on as-is to the OS authenticator API, which returns the response.
 The OS calls are the same that the web browser would do.
 
@@ -110,10 +108,27 @@ The authenticating application then passes on the response
 as-is to the server.
 
 5.
-  a. If the server accepts the response as valid and allows login,
-  it responds with a SASL success response. The user is logged in.
+  a. If the response is invalid, the server responds with a
+  SASL error and a human-readable error message for the end user.
 
-  b. If the response is invalid, the server responds with a
+  b. If the server accepts the response as valid, it can derive
+  the authentication identity from the received response.
+  If login as the derived authentication identity is forbidden,
+  the server will return a
+  SASL error. A human-readable error message for end users
+  must be included, with a detailed and helpful description of why
+  login is forbidden for that user, and instructions for the user
+  how the situation can be remedied.
+
+  c. If the server accepts the login attempt from the derived
+  authentication identity, it then checks
+  whether or not the provided authorization identity is allowed
+  to act as the authentication identity associated with the passkey
+  being used by the user. If such authorization is granted
+  (in particular if authorization and authentication identities
+  refer to the same identity, or authorization identity is omitted)
+  it responds with a SASL success response. The user is logged in.
+  Otherwise the server responds with a
   SASL error and a human-readable error message for the end user.
 
 ~~~~ abnf
@@ -161,7 +176,7 @@ C: EAB675757GJvYgB== (passkey response)
 S: 23 OK AUTHENTICATE completed
 ~~~~
 
-Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authentication identity
+Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authorization identity
 ("you@example.com"), "AEC6576576557===" is base64-encoded passkey challenge,
 "EAB675757GJvYgB==" is base64-encoded passkey response.  All challenge and
 responses values are base64-encoded according to the IMAP SASL protocol
