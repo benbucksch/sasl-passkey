@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-28T00:06:41.333240+00:00",
+  "timestamp": "2025-01-30T00:06:35.426114+00:00",
   "repo": "benbucksch/sasl-passkey",
   "labels": [
     {
@@ -205,6 +205,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDONX4Mas6JWDL6",
+      "title": "Added support for a separate authorization identity",
+      "url": "https://github.com/benbucksch/sasl-passkey/pull/4",
+      "state": "OPEN",
+      "author": "aamelnikov",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Passkey challenge seems to depend on server knowing the authentication identity,\r\nso both authentication and authorization identities need to be provided.\r\n\r\nAlso fixed rendering of ABNF fragments.",
+      "createdAt": "2025-01-29T11:06:43Z",
+      "updatedAt": "2025-01-29T11:06:44Z",
+      "baseRepository": "benbucksch/sasl-passkey",
+      "baseRefName": "main",
+      "baseRefOid": "1f44a8d73cdcb7f18811eca269dee92b1bd612cf",
+      "headRepository": "aamelnikov/sasl-passkey",
+      "headRefName": "melnikov/authzid",
+      "headRefOid": "4fbd377b796fca3635f8d33df8e8de5566b1a746",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
