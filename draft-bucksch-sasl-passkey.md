@@ -69,18 +69,20 @@ application, but managed entirely by the Passkey manager.
 
 ## Initial Auth using Passkey
 
-1. The authenticating application has the target server hostname
-and authentication identity (e.g. username or email address) configured.
+1. The authenticating application has the target server hostname and
+   authentication identity (e.g. username or email address) configured.  If the
+target server is an IMAP server, the username is the email address. If the
+target server is an XMPP server, the username is the XMPP address of the user.
 
-If the target server is an IMAP server, the username is the email address. If the target server is an XMPP server, the username is the
-XMPP address of the user.
-
-2. The authenticating application opens (or reuses existing) connection to the target server and starts authentication using the SASL `PASSKEY` mechanism.
+2. The authenticating application opens (or reuses existing) connection to the
+   target server and starts authentication using the SASL `PASSKEY` mechanism.
 `PASSKEY` mechanism starts with the client sending the initial client response,
 which has the following format defined using ABNF:
 
+~~~~ abnf
 passkey-client-step1 = authentication_id
 authentication_id    = 1*OCTET
+~~~~
 
 3.
   a. The server generates a Passkey challenge, based on the
@@ -93,7 +95,8 @@ authentication_id    = 1*OCTET
   login is forbidden for that user, and instructions for the user
   how the situation can be remedied.
 
-4. The authenticating application takes the challenge and passes it
+4.
+The authenticating application takes the challenge and passes it
 on as-is to the OS authenticator API, which returns the response.
 The OS calls are the same that the web browser would do.
 
@@ -113,6 +116,7 @@ as-is to the server.
   b. If the response is invalid, the server responds with a
   SASL error and a human-readable error message for the end user.
 
+~~~~ abnf
 server-final-message = server-error "," server-error-message
         ; Only returned on error. Omitted on success.
 
@@ -137,6 +141,7 @@ server-error-message = "m=" server-error-message-value
 
 server-error-message-value = 1*OCTET
         ; Human readable error message in UTF-8
+~~~~
 
 This SASL mechanims will typically be combined with SASL chain
 or SASL2, to allow re-opening a new connection without requiring
@@ -145,7 +150,8 @@ the user to go through Passkey authentication again.
 # IMAP Example
 
 In IMAP, the exchange would be:
-```
+
+~~~~
 S: * OK ACME IMAP Server v1.23 is ready
 C: 22 CAPABILITY
 S: 22 CAPABILITY IMAP4rev1 IMAP4rev2 AUTH=PASSKEY AUTH=REMEMBERME
@@ -153,12 +159,13 @@ C: 23 AUTHENTICATE PASSKEY eW91QGV4YW1wbGUuY29tCg==
 S: AEC6576576557=== (passkey challenge)
 C: EAB675757GJvYgB== (passkey response)
 S: 23 OK AUTHENTICATE completed
-```
+~~~~
 
-Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authentication identity ("you@example.com"),
-"AEC6576576557===" is base64-encoded passkey challenge,
-"EAB675757GJvYgB==" is base64-encoded passkey response.
-All challenge and responses values are base64-encoded according to the IMAP SASL protocol profile.
+Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authentication identity
+("you@example.com"), "AEC6576576557===" is base64-encoded passkey challenge,
+"EAB675757GJvYgB==" is base64-encoded passkey response.  All challenge and
+responses values are base64-encoded according to the IMAP SASL protocol
+profile.
 
 # Conventions and Definitions
 
@@ -171,18 +178,22 @@ It's all about security.
 
 # IANA Considerations
 
-IANA is requested to add the following entry to the SASL Mechanism registry established by [RFC4422]:
+IANA is requested to add the following entry to the SASL Mechanism registry
+established by {{!RFC4422}}:
 
+~~~~
 To: iana@iana.org
 Subject: Registration of a new SASL mechanism PASSKEY
 
 SASL mechanism name (or prefix for the family): PASSKEY
 Security considerations: Section YY of [RFCXXXX]
 Published specification (optional, recommended): [RFCXXXX]
-Person & email address to contact for further information: IETF Kitten WG <kitten@ietf.org>
+Person & email address to contact for further information:
+    IETF Kitten WG <kitten@ietf.org>
 Intended usage: COMMON
 Owner/Change controller: IESG <iesg@ietf.org>
 Note:
+~~~~
 
 --- back
 
