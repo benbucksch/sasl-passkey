@@ -5,8 +5,8 @@
 kitten                                                        B. Bucksch
 Internet-Draft                                                    Beonex
 Intended status: Informational                                S. Farrell
-Expires: 28 July 2025                             Trinity College Dublin
-                                                         24 January 2025
+Expires: 4 August 2025                            Trinity College Dublin
+                                                         31 January 2025
 
 
                               SASL Passkey
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 July 2025.
+   This Internet-Draft will expire on 4 August 2025.
 
 Copyright Notice
 
@@ -104,19 +104,18 @@ Table of Contents
 
    1.  The authenticating application has the target server hostname and
        authentication identity (e.g. username or email address)
-       configured.
+       configured.  If the target server is an IMAP server, the username
+       is the email address.  If the target server is an XMPP server,
+       the username is the XMPP address of the user.
 
-   If the target server is an IMAP server, the username is the email
-   address.  If the target server is an XMPP server, the username is the
-   XMPP address of the user.
-
-   1.  The authenticating application opens (or reuses existing)
+   2.  The authenticating application opens (or reuses existing)
        connection to the target server and starts authentication using
        the SASL PASSKEY mechanism.  PASSKEY mechanism starts with the
        client sending the initial client response, which has the
        following format defined using ABNF:
 
-   passkey-client-step1 = authentication_id authentication_id = 1*OCTET
+   passkey-client-step1 = authentication_id
+   authentication_id    = 1*OCTET
 
    3.  a.  The server generates a Passkey challenge, based on the target
    server hostname, authentication identity, and Passkey of the user,
@@ -128,9 +127,9 @@ Table of Contents
    forbidden for that user, and instructions for the user how the
    situation can be remedied.
 
-   1.  The authenticating application takes the challenge and passes it
-       on as-is to the OS authenticator API, which returns the response.
-       The OS calls are the same that the web browser would do.
+   4.  The authenticating application takes the challenge and passes it
+   on as-is to the OS authenticator API, which returns the response.
+   The OS calls are the same that the web browser would do.
 
    As part of this process, the OS authenticator API may require the end
    user to complete additional authentication, for example entering a
@@ -147,25 +146,30 @@ Table of Contents
    b.  If the response is invalid, the server responds with a SASL error
    and a human-readable error message for the end user.
 
-   server-final-message = server-error "," server-error-message ; Only
-   returned on error.  Omitted on success.
+   server-final-message = server-error "," server-error-message
+           ; Only returned on error. Omitted on success.
 
    server-error = "e=" server-error-value
 
-   server-error-value = "invalid-encoding" / "unknown-user" / "invalid-
-   username-encoding" / ; invalid username encoding (invalid UTF-8 or ;
-   SASLprep failed) "other-error" / server-error-value-ext ;
-   Unrecognized errors should be treated as "other-error".  ; In order
-   to prevent information disclosure, the server ; may substitute the
-   real reason with "other-error".
+   server-error-value = "invalid-encoding" /
+                        "unknown-user" /
+                        "invalid-username-encoding" /
+                          ; invalid username encoding (invalid UTF-8 or
+                          ; SASLprep failed)
+                        "other-error" /
+                        server-error-value-ext
+           ; Unrecognized errors should be treated as "other-error".
+           ; In order to prevent information disclosure, the server
+           ; may substitute the real reason with "other-error".
 
-   server-error-value-ext = value ; Additional error reasons added by
-   extensions ; to this document.
+   server-error-value-ext = value
+           ; Additional error reasons added by extensions
+           ; to this document.
 
    server-error-message = "m=" server-error-message-value
 
-   server-error-message-value = 1*OCTET ; Human readable error message
-   in UTF-8
+   server-error-message-value = 1*OCTET
+           ; Human readable error message in UTF-8
 
    This SASL mechanims will typically be combined with SASL chain or
    SASL2, to allow re-opening a new connection without requiring the
@@ -173,11 +177,15 @@ Table of Contents
 
 3.  IMAP Example
 
-   In IMAP, the exchange would be: S: * OK ACME IMAP Server v1.23 is
-   ready C: 22 CAPABILITY S: 22 CAPABILITY IMAP4rev1 IMAP4rev2
-   AUTH=PASSKEY AUTH=REMEMBERME C: 23 AUTHENTICATE PASSKEY
-   eW91QGV4YW1wbGUuY29tCg== S: AEC6576576557=== (passkey challenge) C:
-   EAB675757GJvYgB== (passkey response) S: 23 OK AUTHENTICATE completed
+   In IMAP, the exchange would be:
+
+   S: * OK ACME IMAP Server v1.23 is ready
+   C: 22 CAPABILITY
+   S: 22 CAPABILITY IMAP4rev1 IMAP4rev2 AUTH=PASSKEY AUTH=REMEMBERME
+   C: 23 AUTHENTICATE PASSKEY eW91QGV4YW1wbGUuY29tCg==
+   S: AEC6576576557=== (passkey challenge)
+   C: EAB675757GJvYgB== (passkey response)
+   S: 23 OK AUTHENTICATE completed
 
    Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authentication
    identity ("you@example.com"), "AEC6576576557===" is base64-encoded
@@ -202,15 +210,17 @@ Table of Contents
    IANA is requested to add the following entry to the SASL Mechanism
    registry established by [RFC4422]:
 
-   To: iana@iana.org Subject: Registration of a new SASL mechanism
-   PASSKEY
+   To: iana@iana.org
+   Subject: Registration of a new SASL mechanism PASSKEY
 
-   SASL mechanism name (or prefix for the family): PASSKEY Security
-   considerations: Section YY of [RFCXXXX] Published specification
-   (optional, recommended): [RFCXXXX] Person & email address to contact
-   for further information: IETF Kitten WG kitten@ietf.org
-   (mailto:kitten@ietf.org) Intended usage: COMMON Owner/Change
-   controller: IESG iesg@ietf.org (mailto:iesg@ietf.org) Note:
+   SASL mechanism name (or prefix for the family): PASSKEY
+   Security considerations: Section YY of [RFCXXXX]
+   Published specification (optional, recommended): [RFCXXXX]
+   Person & email address to contact for further information:
+       IETF Kitten WG <kitten@ietf.org>
+   Intended usage: COMMON
+   Owner/Change controller: IESG <iesg@ietf.org>
+   Note:
 
 7.  Normative References
 
@@ -218,6 +228,11 @@ Table of Contents
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC4422]  Melnikov, A., Ed. and K. Zeilenga, Ed., "Simple
+              Authentication and Security Layer (SASL)", RFC 4422,
+              DOI 10.17487/RFC4422, June 2006,
+              <https://www.rfc-editor.org/rfc/rfc4422>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,

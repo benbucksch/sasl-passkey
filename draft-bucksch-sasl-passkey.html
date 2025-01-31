@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Bucksch &amp; Farrell</td>
-<td class="center">Expires 28 July 2025</td>
+<td class="center">Expires 4 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bucksch-sasl-passkey-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-24" class="published">24 January 2025</time>
+<time datetime="2025-01-31" class="published">31 January 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-07-28">28 July 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-04">4 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1124,7 +1124,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 28 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1220,53 +1220,57 @@ application, but managed entirely by the Passkey manager.<a href="#section-2-2" 
         </h3>
 <ol start="1" type="1" class="normal type-1" id="section-2.1-1">
 <li id="section-2.1-1.1">
-            <p id="section-2.1-1.1.1">The authenticating application has the target server hostname
-and authentication identity (e.g. username or email address) configured.<a href="#section-2.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-1.1.1">The authenticating application has the target server hostname and
+authentication identity (e.g. username or email address) configured.  If the
+target server is an IMAP server, the username is the email address. If the
+target server is an XMPP server, the username is the XMPP address of the user.<a href="#section-2.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
-        </ol>
-<p id="section-2.1-2">If the target server is an IMAP server, the username is the email address. If the target server is an XMPP server, the username is the
-XMPP address of the user.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-2.1-3">
-<li id="section-2.1-3.1">
-            <p id="section-2.1-3.1.1">The authenticating application opens (or reuses existing) connection to the target server and starts authentication using the SASL <code>PASSKEY</code> mechanism.
+          <li id="section-2.1-1.2">
+            <p id="section-2.1-1.2.1">The authenticating application opens (or reuses existing) connection to the
+target server and starts authentication using the SASL <code>PASSKEY</code> mechanism.
 <code>PASSKEY</code> mechanism starts with the client sending the initial client response,
-which has the following format defined using ABNF:<a href="#section-2.1-3.1.1" class="pilcrow">¶</a></p>
+which has the following format defined using ABNF:<a href="#section-2.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
-<p id="section-2.1-4">passkey-client-step1 = authentication_id
-authentication_id    = 1*OCTET<a href="#section-2.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.1-5">3.
+<div class="lang-abnf sourcecode" id="section-2.1-2">
+<pre>
+passkey-client-step1 = authentication_id
+authentication_id    = 1*OCTET
+</pre><a href="#section-2.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.1-3">3.
   a. The server generates a Passkey challenge, based on the
   target server hostname, authentication identity, and Passkey of the user,
-  and sends the server challenge with to the client.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
-<p id="section-2.1-6">b. If login for that user is forbidden, the server will return a
+  and sends the server challenge with to the client.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-4">b. If login for that user is forbidden, the server will return a
   SASL error. A human-readable error message for end users
   must be included, with a detailed and helpful description of why
   login is forbidden for that user, and instructions for the user
-  how the situation can be remedied.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-2.1-7">
-<li id="section-2.1-7.1">
-            <p id="section-2.1-7.1.1">The authenticating application takes the challenge and passes it
+  how the situation can be remedied.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1-5">4.
+The authenticating application takes the challenge and passes it
 on as-is to the OS authenticator API, which returns the response.
-The OS calls are the same that the web browser would do.<a href="#section-2.1-7.1.1" class="pilcrow">¶</a></p>
-</li>
-        </ol>
-<p id="section-2.1-8">As part of this process, the OS authenticator API may require
+The OS calls are the same that the web browser would do.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.1-6">As part of this process, the OS authenticator API may require
 the end user to complete additional authentication, for example
 entering a device unlock code, providing a fingerprint,
 face recognition, or similar. This is the responsibility of the
-OS authenticator and outside the scope of this protocol.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
-<p id="section-2.1-9">The authenticating application then passes on the response
-as-is to the server.<a href="#section-2.1-9" class="pilcrow">¶</a></p>
-<p id="section-2.1-10">5.
+OS authenticator and outside the scope of this protocol.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.1-7">The authenticating application then passes on the response
+as-is to the server.<a href="#section-2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.1-8">5.
   a. If the server accepts the response as valid and allows login,
-  it responds with a SASL success response. The user is logged in.<a href="#section-2.1-10" class="pilcrow">¶</a></p>
-<p id="section-2.1-11">b. If the response is invalid, the server responds with a
-  SASL error and a human-readable error message for the end user.<a href="#section-2.1-11" class="pilcrow">¶</a></p>
-<p id="section-2.1-12">server-final-message = server-error "," server-error-message
-        ; Only returned on error. Omitted on success.<a href="#section-2.1-12" class="pilcrow">¶</a></p>
-<p id="section-2.1-13">server-error = "e=" server-error-value<a href="#section-2.1-13" class="pilcrow">¶</a></p>
-<p id="section-2.1-14">server-error-value = "invalid-encoding" /
+  it responds with a SASL success response. The user is logged in.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
+<p id="section-2.1-9">b. If the response is invalid, the server responds with a
+  SASL error and a human-readable error message for the end user.<a href="#section-2.1-9" class="pilcrow">¶</a></p>
+<div class="lang-abnf sourcecode" id="section-2.1-10">
+<pre>
+server-final-message = server-error "," server-error-message
+        ; Only returned on error. Omitted on success.
+
+server-error = "e=" server-error-value
+
+server-error-value = "invalid-encoding" /
                      "unknown-user" /
                      "invalid-username-encoding" /
                        ; invalid username encoding (invalid UTF-8 or
@@ -1275,16 +1279,21 @@ as-is to the server.<a href="#section-2.1-9" class="pilcrow">¶</a></p>
                      server-error-value-ext
         ; Unrecognized errors should be treated as "other-error".
         ; In order to prevent information disclosure, the server
-        ; may substitute the real reason with "other-error".<a href="#section-2.1-14" class="pilcrow">¶</a></p>
-<p id="section-2.1-15">server-error-value-ext = value
+        ; may substitute the real reason with "other-error".
+
+server-error-value-ext = value
         ; Additional error reasons added by extensions
-        ; to this document.<a href="#section-2.1-15" class="pilcrow">¶</a></p>
-<p id="section-2.1-16">server-error-message = "m=" server-error-message-value<a href="#section-2.1-16" class="pilcrow">¶</a></p>
-<p id="section-2.1-17">server-error-message-value = 1*OCTET
-        ; Human readable error message in UTF-8<a href="#section-2.1-17" class="pilcrow">¶</a></p>
-<p id="section-2.1-18">This SASL mechanims will typically be combined with SASL chain
+        ; to this document.
+
+server-error-message = "m=" server-error-message-value
+
+server-error-message-value = 1*OCTET
+        ; Human readable error message in UTF-8
+</pre><a href="#section-2.1-10" class="pilcrow">¶</a>
+</div>
+<p id="section-2.1-11">This SASL mechanims will typically be combined with SASL chain
 or SASL2, to allow re-opening a new connection without requiring
-the user to go through Passkey authentication again.<a href="#section-2.1-18" class="pilcrow">¶</a></p>
+the user to go through Passkey authentication again.<a href="#section-2.1-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1294,8 +1303,9 @@ the user to go through Passkey authentication again.<a href="#section-2.1-18" cl
       <h2 id="name-imap-example">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-imap-example" class="section-name selfRef">IMAP Example</a>
       </h2>
-<p id="section-3-1">In IMAP, the exchange would be:
-<code>
+<p id="section-3-1">In IMAP, the exchange would be:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-2">
+<pre>
 S: * OK ACME IMAP Server v1.23 is ready
 C: 22 CAPABILITY
 S: 22 CAPABILITY IMAP4rev1 IMAP4rev2 AUTH=PASSKEY AUTH=REMEMBERME
@@ -1303,11 +1313,13 @@ C: 23 AUTHENTICATE PASSKEY eW91QGV4YW1wbGUuY29tCg==
 S: AEC6576576557=== (passkey challenge)
 C: EAB675757GJvYgB== (passkey response)
 S: 23 OK AUTHENTICATE completed
-</code><a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authentication identity ("you@example.com"),
-"AEC6576576557===" is base64-encoded passkey challenge,
-"EAB675757GJvYgB==" is base64-encoded passkey response.
-All challenge and responses values are base64-encoded according to the IMAP SASL protocol profile.<a href="#section-3-2" class="pilcrow">¶</a></p>
+</pre><a href="#section-3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3-3">Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authentication identity
+("you@example.com"), "AEC6576576557===" is base64-encoded passkey challenge,
+"EAB675757GJvYgB==" is base64-encoded passkey response.  All challenge and
+responses values are base64-encoded according to the IMAP SASL protocol
+profile.<a href="#section-3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1334,16 +1346,23 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
       <h2 id="name-iana-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-6-1">IANA is requested to add the following entry to the SASL Mechanism registry established by [RFC4422]:<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">To: iana@iana.org
-Subject: Registration of a new SASL mechanism PASSKEY<a href="#section-6-2" class="pilcrow">¶</a></p>
-<p id="section-6-3">SASL mechanism name (or prefix for the family): PASSKEY
+<p id="section-6-1">IANA is requested to add the following entry to the SASL Mechanism registry
+established by <span>[<a href="#RFC4422" class="cite xref">RFC4422</a>]</span>:<a href="#section-6-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6-2">
+<pre>
+To: iana@iana.org
+Subject: Registration of a new SASL mechanism PASSKEY
+
+SASL mechanism name (or prefix for the family): PASSKEY
 Security considerations: Section YY of [RFCXXXX]
 Published specification (optional, recommended): [RFCXXXX]
-Person &amp; email address to contact for further information: IETF Kitten WG <a href="mailto:kitten@ietf.org">kitten@ietf.org</a>
+Person &amp; email address to contact for further information:
+    IETF Kitten WG &lt;kitten@ietf.org&gt;
 Intended usage: COMMON
-Owner/Change controller: IESG <a href="mailto:iesg@ietf.org">iesg@ietf.org</a>
-Note:<a href="#section-6-3" class="pilcrow">¶</a></p>
+Owner/Change controller: IESG &lt;iesg@ietf.org&gt;
+Note:
+</pre><a href="#section-6-2" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 <div id="sec-normative-references">
@@ -1355,6 +1374,10 @@ Note:<a href="#section-6-3" class="pilcrow">¶</a></p>
 <dt id="RFC2119">[RFC2119]</dt>
       <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4422">[RFC4422]</dt>
+      <dd>
+<span class="refAuthor">Melnikov, A., Ed.</span> and <span class="refAuthor">K. Zeilenga, Ed.</span>, <span class="refTitle">"Simple Authentication and Security Layer (SASL)"</span>, <span class="seriesInfo">RFC 4422</span>, <span class="seriesInfo">DOI 10.17487/RFC4422</span>, <time datetime="2006-06" class="refDate">June 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4422">https://www.rfc-editor.org/rfc/rfc4422</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
     <dd>
