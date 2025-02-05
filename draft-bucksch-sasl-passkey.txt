@@ -5,8 +5,8 @@
 kitten                                                        B. Bucksch
 Internet-Draft                                                    Beonex
 Intended status: Informational                                S. Farrell
-Expires: 4 August 2025                            Trinity College Dublin
-                                                         31 January 2025
+Expires: 9 August 2025                            Trinity College Dublin
+                                                         5 February 2025
 
 
                               SASL Passkey
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 August 2025.
+   This Internet-Draft will expire on 9 August 2025.
 
 Copyright Notice
 
@@ -103,33 +103,33 @@ Table of Contents
 2.1.  Initial Auth using Passkey
 
    1.  The authenticating application has the target server hostname and
-       authentication identity (e.g. username or email address)
-       configured.  If the target server is an IMAP server, the username
-       is the email address.  If the target server is an XMPP server,
-       the username is the XMPP address of the user.
+       authorization identity (e.g. username or email address)
+       configured.  SASL PASSKEY mechanism supports authenticating as
+       one identity ("authentication identity") and then (optionally)
+       authorizing as another.
 
-   2.  The authenticating application opens (or reuses existing)
+   If the target server is an IMAP server, the username is the email
+   address.  If the target server is an XMPP server, the username is the
+   XMPP address of the user.
+
+   1.  The authenticating application opens (or reuses existing)
        connection to the target server and starts authentication using
        the SASL PASSKEY mechanism.  PASSKEY mechanism starts with the
        client sending the initial client response, which has the
        following format defined using ABNF:
 
-   passkey-client-step1 = authentication_id
-   authentication_id    = 1*OCTET
+   passkey-client-step1 = [authorization_id]
+   authorization_id     = 1*OCTET
 
-   3.  a.  The server generates a Passkey challenge, based on the target
-   server hostname, authentication identity, and Passkey of the user,
-   and sends the server challenge with to the client.
+   1.  The server generates a Passkey challenge, based on the target
+       server hostname, and sends the server challenge to the client.
+       The challenge doesn't depend on the passkey to be used by the
+       user.
 
-   b.  If login for that user is forbidden, the server will return a
-   SASL error.  A human-readable error message for end users must be
-   included, with a detailed and helpful description of why login is
-   forbidden for that user, and instructions for the user how the
-   situation can be remedied.
-
-   4.  The authenticating application takes the challenge and passes it
-   on as-is to the OS authenticator API, which returns the response.
-   The OS calls are the same that the web browser would do.
+   4.  The authenticating application (SASL client) takes the received
+   passkey challenge and passes it on as-is to the OS authenticator API,
+   which returns the response.  The OS calls are the same that the web
+   browser would do.
 
    As part of this process, the OS authenticator API may require the end
    user to complete additional authentication, for example entering a
@@ -140,11 +140,26 @@ Table of Contents
    The authenticating application then passes on the response as-is to
    the server.
 
-   5.  a.  If the server accepts the response as valid and allows login,
-   it responds with a SASL success response.  The user is logged in.
+   5.  a.  If the response is invalid, the server responds with a SASL
+   error and a human-readable error message for the end user.
 
-   b.  If the response is invalid, the server responds with a SASL error
-   and a human-readable error message for the end user.
+   b.  If the server accepts the response as valid, it can derive the
+   authentication identity from the received response.  If login as the
+   derived authentication identity is forbidden, the server will return
+   a SASL error.  A human-readable error message for end users must be
+   included, with a detailed and helpful description of why login is
+   forbidden for that user, and instructions for the user how the
+   situation can be remedied.
+
+   c.  If the server accepts the login attempt from the derived
+   authentication identity, it then checks whether or not the provided
+   authorization identity is allowed to act as the authentication
+   identity associated with the passkey being used by the user.  If such
+   authorization is granted (in particular if authorization and
+   authentication identities refer to the same identity, or
+   authorization identity is omitted) it responds with a SASL success
+   response.  The user is logged in.  Otherwise the server responds with
+   a SASL error and a human-readable error message for the end user.
 
    server-final-message = server-error "," server-error-message
            ; Only returned on error. Omitted on success.
@@ -187,7 +202,7 @@ Table of Contents
    C: EAB675757GJvYgB== (passkey response)
    S: 23 OK AUTHENTICATE completed
 
-   Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authentication
+   Where "eW91QGV4YW1wbGUuY29tCg==" is base64-encoded authorization
    identity ("you@example.com"), "AEC6576576557===" is base64-encoded
    passkey challenge, "EAB675757GJvYgB==" is base64-encoded passkey
    response.  All challenge and responses values are base64-encoded
