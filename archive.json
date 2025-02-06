@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-04T00:06:44.581990+00:00",
+  "timestamp": "2025-02-06T00:06:52.252096+00:00",
   "repo": "benbucksch/sasl-passkey",
   "labels": [
     {
@@ -211,25 +211,33 @@
       "id": "PR_kwDONX4Mas6JWDL6",
       "title": "Added support for a separate authorization identity",
       "url": "https://github.com/benbucksch/sasl-passkey/pull/4",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "aamelnikov",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Passkey challenge seems to depend on server knowing the authentication identity,\r\nso both authentication and authorization identities need to be provided.\r\n\r\nAlso fixed rendering of ABNF fragments.",
       "createdAt": "2025-01-29T11:06:43Z",
-      "updatedAt": "2025-01-29T11:06:44Z",
+      "updatedAt": "2025-02-05T12:26:43Z",
       "baseRepository": "benbucksch/sasl-passkey",
       "baseRefName": "main",
       "baseRefOid": "1f44a8d73cdcb7f18811eca269dee92b1bd612cf",
       "headRepository": "aamelnikov/sasl-passkey",
       "headRefName": "melnikov/authzid",
       "headRefOid": "4fbd377b796fca3635f8d33df8e8de5566b1a746",
-      "closedAt": null,
+      "closedAt": "2025-02-05T12:26:43Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "aamelnikov",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It looks like the server challenge is independent of the user identity, so this change needs to be reworked.",
+          "createdAt": "2025-02-05T12:26:43Z",
+          "updatedAt": "2025-02-05T12:26:43Z"
+        }
+      ],
       "reviews": []
     },
     {
@@ -270,6 +278,94 @@
           "body": "",
           "createdAt": "2025-01-31T14:05:27Z",
           "updatedAt": "2025-01-31T14:05:27Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDONX4Mas6KImSt",
+      "title": "Added support for a separate authorization identity",
+      "url": "https://github.com/benbucksch/sasl-passkey/pull/6",
+      "state": "MERGED",
+      "author": "aamelnikov",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "aamelnikov"
+      ],
+      "labels": [],
+      "body": "The authentication identity can be extracted by the server from the passkey used.",
+      "createdAt": "2025-02-05T12:34:19Z",
+      "updatedAt": "2025-02-05T13:00:47Z",
+      "baseRepository": "benbucksch/sasl-passkey",
+      "baseRefName": "main",
+      "baseRefOid": "32b8d0d312159ed9498d0a8161593390b7aac4d8",
+      "headRepository": "aamelnikov/sasl-passkey",
+      "headRefName": "melnikov/authzid",
+      "headRefOid": "33da11b30897cb914c8283426022494f9e7b3338",
+      "closedAt": "2025-02-05T13:00:42Z",
+      "mergedAt": "2025-02-05T13:00:41Z",
+      "mergedBy": "benbucksch",
+      "mergeCommit": {
+        "oid": "cd4ef334b098753958e23b20e5a1012b34bb3028"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONX4Mas6at3vg",
+          "commit": {
+            "abbreviatedOid": "33da11b"
+          },
+          "author": "benbucksch",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-05T13:00:28Z",
+          "updatedAt": "2025-02-05T13:00:28Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDONX4Mas6KJea0",
+      "title": "Fixed IMAP CAPABILITY in the example",
+      "url": "https://github.com/benbucksch/sasl-passkey/pull/7",
+      "state": "MERGED",
+      "author": "aamelnikov",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "aamelnikov"
+      ],
+      "labels": [],
+      "body": "Capabilities are listed in the untagged CAPABILITY response, not in the tagged OK.",
+      "createdAt": "2025-02-05T14:18:42Z",
+      "updatedAt": "2025-02-05T18:59:16Z",
+      "baseRepository": "benbucksch/sasl-passkey",
+      "baseRefName": "main",
+      "baseRefOid": "cd4ef334b098753958e23b20e5a1012b34bb3028",
+      "headRepository": "aamelnikov/sasl-passkey",
+      "headRefName": "imap_capabilities",
+      "headRefOid": "9507136af9c18bd8ce9ff9747a95cb12b5575f30",
+      "closedAt": "2025-02-05T18:59:16Z",
+      "mergedAt": "2025-02-05T18:59:16Z",
+      "mergedBy": "benbucksch",
+      "mergeCommit": {
+        "oid": "ff2d5d4949a8297cb12a2250777aec9f4f959e5f"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONX4Mas6axrvY",
+          "commit": {
+            "abbreviatedOid": "9507136"
+          },
+          "author": "benbucksch",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-05T18:58:56Z",
+          "updatedAt": "2025-02-05T18:58:56Z",
           "comments": []
         }
       ]
