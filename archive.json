@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-27T00:07:03.435441+00:00",
+  "timestamp": "2025-03-02T00:07:32.392808+00:00",
   "repo": "benbucksch/sasl-passkey",
   "labels": [
     {
@@ -247,7 +247,7 @@
       "url": "https://github.com/benbucksch/sasl-passkey/pull/5",
       "state": "MERGED",
       "author": "sftcd",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes formatting to build text.",
